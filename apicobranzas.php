@@ -116,18 +116,16 @@ function getCobroByDocId($doc){
 
     $res = $cobro->obtenerCobro($doc);
 
-    if($res->rowCount() == 1){
-        $row = $res->fetch();
-    
-        $item = array(
-            "id"      => $row['id'],
-            "fecha"   => $row['fecha'],
-            "importe" => $row['importe'],
-            "doc_id"  => $row['doc_id']
-        );
-
-        array_push($cobros["items"], $item);
-
+    if($res->rowCount()){
+        while ($row = $res->fetch(PDO::FETCH_ASSOC)){
+            $item = array(
+                "id"      => $row['id'],
+                "fecha"   => $row['fecha'],
+                "importe" => $row['importe'],
+                "doc_id"  => $row['doc_id']
+            );
+            array_push($cobros["items"], $item);
+        }
         printJSON($cobros);
     }else{
         echo json_encode(array('mensaje' => 'No hay elementos'));
